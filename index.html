@@ -13,7 +13,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/src/index.tsx"></script>
 
     <!-- TEMP: show friendly error overlay if JS fails to load -->
     <script>
@@ -35,9 +35,9 @@
         console.error('Unhandled rejection', ev);
       });
       fetch('/src/main.tsx', {method:'HEAD'}).then(r=>{
-        if(!r.ok) showFatal('Module not found: /src/main.tsx (HTTP '+r.status+')');
+        if(!r.ok) showFatal('Module not found: /src/index.tsx (HTTP '+r.status+')');
       }).catch(err=>{
-        showFatal('Network error fetching /src/main.tsx: '+err.message);
+        showFatal('Network error fetching /src/index.tsx: '+err.message);
       });
     </script>
   </body>
