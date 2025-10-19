@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tech Info — Design · Develop · Innovate</title>
+
+    <!-- Use only the company logo as favicon (ensure file exists at public/assets/tech-info-logo.png) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/tech-info-logo.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/tech-info-logo.png" />
+    <link rel="apple-touch-icon" href="/assets/tech-info-logo.png" />
+    <meta name="theme-color" content="#0ea5a4" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- TEMP: show friendly error overlay if JS fails to load -->
+    <script>
+      function showFatal(msg){
+        const s=document.createElement('style');
+        s.textContent='#__err{position:fixed;inset:12px;z-index:99999;padding:16px;border-radius:8px;background:#111;color:#fff;font-family:system-ui,Arial;box-shadow:0 10px 30px rgba(0,0,0,.6)}';
+        document.head.appendChild(s);
+        const el=document.createElement('div');
+        el.id='__err';
+        el.innerHTML='<strong>App failed to load</strong><div style="margin-top:8px;">'+msg+'</div>';
+        document.body.appendChild(el);
+      }
+      window.addEventListener('error', (e)=> {
+        showFatal((e && e.message) || 'Unknown error');
+        console.error('Fatal error', e);
+      });
+      window.addEventListener('unhandledrejection', (ev)=> {
+        showFatal((ev && (ev.reason && ev.reason.message)) || String(ev));
+        console.error('Unhandled rejection', ev);
+      });
+      fetch('/src/main.tsx', {method:'HEAD'}).then(r=>{
+        if(!r.ok) showFatal('Module not found: /src/main.tsx (HTTP '+r.status+')');
+      }).catch(err=>{
+        showFatal('Network error fetching /src/main.tsx: '+err.message);
+      });
+    </script>
+  </body>
+</html>
